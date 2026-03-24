@@ -1,68 +1,96 @@
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #0f766e, #14b8a6);
-  color: white;
-  text-align: center;
+const celebrities = [
+  {
+    name: "Barack Obama",
+    ear: "images/obama-ear.jpg",
+    full: "images/obama.jpg"
+  },
+  {
+    name: "Taylor Swift",
+    ear: "images/taylor-ear.jpg",
+    full: "images/taylor.jpg"
+  },
+  {
+    name: "Cristiano Ronaldo",
+    ear: "images/ronaldo-ear.jpg",
+    full: "images/ronaldo.jpg"
+  },
+  {
+    name: "Adele",
+    ear: "images/adele-ear.jpg",
+    full: "images/adele.jpg"
+  }
+];
+
+let currentIndex = 0;
+
+const earImage = document.getElementById("earImage");
+const guessInput = document.getElementById("guessInput");
+const feedback = document.getElementById("feedback");
+const revealSection = document.getElementById("revealSection");
+const fullImage = document.getElementById("fullImage");
+const answerText = document.getElementById("answerText");
+
+const submitBtn = document.getElementById("submitBtn");
+const revealBtn = document.getElementById("revealBtn");
+const nextBtn = document.getElementById("nextBtn");
+
+function normalise(text) {
+  return text.trim().toLowerCase().replace(/\s+/g, " ");
 }
 
-.container {
-  max-width: 600px;
-  margin: auto;
-  padding: 20px;
+function loadQuestion() {
+  const celeb = celebrities[currentIndex];
+
+  earImage.src = celeb.ear;
+  earImage.alt = `${celeb.name} ear`;
+
+  guessInput.value = "";
+  feedback.textContent = "";
+  revealSection.classList.add("hidden");
+  fullImage.src = "";
+  answerText.textContent = "";
 }
 
-h1 {
-  margin-bottom: 20px;
+function submitGuess() {
+  const guess = normalise(guessInput.value);
+  const answer = normalise(celebrities[currentIndex].name);
+
+  if (!guess) {
+    feedback.textContent = "Type a guess first.";
+    return;
+  }
+
+  if (guess === answer) {
+    feedback.textContent = "✅ Correct!";
+  } else {
+    feedback.textContent = "❌ Not quite. Hit Reveal to see who it is.";
+  }
 }
 
-#earImage {
-  width: 250px;
-  height: 250px;
-  object-fit: cover;
-  border-radius: 12px;
-  border: 4px solid white;
+function revealAnswer() {
+  const celeb = celebrities[currentIndex];
+  fullImage.src = celeb.full;
+  fullImage.alt = celeb.name;
+  answerText.textContent = celeb.name;
+  revealSection.classList.remove("hidden");
 }
 
-#fullImage {
-  width: 200px;
-  margin-top: 15px;
-  border-radius: 12px;
+function nextQuestion() {
+  currentIndex++;
+  if (currentIndex >= celebrities.length) {
+    currentIndex = 0;
+  }
+  loadQuestion();
 }
 
-input {
-  margin-top: 15px;
-  padding: 10px;
-  width: 70%;
-  border-radius: 8px;
-  border: none;
-  font-size: 16px;
-}
+submitBtn.addEventListener("click", submitGuess);
+revealBtn.addEventListener("click", revealAnswer);
+nextBtn.addEventListener("click", nextQuestion);
 
-.buttons {
-  margin-top: 15px;
-}
+guessInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    submitGuess();
+  }
+});
 
-button {
-  padding: 10px 15px;
-  margin: 5px;
-  border: none;
-  border-radius: 8px;
-  background: #facc15;
-  color: black;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-button:hover {
-  background: #fde047;
-}
-
-#feedback {
-  margin-top: 15px;
-  font-size: 18px;
-}
-
-.hidden {
-  display: none;
-}
+loadQuestion();
