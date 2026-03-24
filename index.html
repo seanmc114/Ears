@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Guess the Celebrity Ears 👂</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="container">
+    <h1>👂 Guess the Celebrity!</h1>
+
+    <div id="game">
+      <img id="earImage" src="" alt="Celebrity Ear">
+
+      <input type="text" id="guessInput" placeholder="Your guess...">
+
+      <div class="buttons">
+        <button onclick="submitGuess()">Submit</button>
+        <button onclick="revealAnswer()">Reveal</button>
+        <button onclick="nextQuestion()">Next</button>
+      </div>
+
+      <div id="feedback"></div>
+
+      <div id="revealSection" class="hidden">
+        <img id="fullImage" src="" alt="Celebrity">
+        <p id="answerText"></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
