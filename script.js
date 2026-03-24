@@ -1,54 +1,78 @@
 const celebrities = [
   {
     name: "Barack Obama",
-    ear: "https://upload.wikimedia.org/wikipedia/commons/8/8d/Barack_Obama_ear_crop.jpg",
-    full: "https://upload.wikimedia.org/wikipedia/commons/8/8d/President_Barack_Obama.jpg"
-  },
-  {
-    name: "Elon Musk",
-    ear: "https://upload.wikimedia.org/wikipedia/commons/6/6f/Elon_Musk_ear_crop.jpg",
-    full: "https://upload.wikimedia.org/wikipedia/commons/e/ed/Elon_Musk_Royal_Society.jpg"
+    ear: "images/obama-ear.jpg",
+    full: "images/obama.jpg"
   },
   {
     name: "Taylor Swift",
-    ear: "https://upload.wikimedia.org/wikipedia/commons/3/3a/Taylor_Swift_ear_crop.jpg",
-    full: "https://upload.wikimedia.org/wikipedia/commons/f/f6/Taylor_Swift_Red_Tour.jpg"
+    ear: "images/taylor-ear.jpg",
+    full: "images/taylor.jpg"
   },
   {
     name: "Cristiano Ronaldo",
-    ear: "https://upload.wikimedia.org/wikipedia/commons/8/8c/Ronaldo_ear_crop.jpg",
-    full: "https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg"
+    ear: "images/ronaldo-ear.jpg",
+    full: "images/ronaldo.jpg"
+  },
+  {
+    name: "Adele",
+    ear: "images/adele-ear.jpg",
+    full: "images/adele.jpg"
   }
 ];
 
 let currentIndex = 0;
 
+const earImage = document.getElementById("earImage");
+const guessInput = document.getElementById("guessInput");
+const feedback = document.getElementById("feedback");
+const revealSection = document.getElementById("revealSection");
+const fullImage = document.getElementById("fullImage");
+const answerText = document.getElementById("answerText");
+
+const submitBtn = document.getElementById("submitBtn");
+const revealBtn = document.getElementById("revealBtn");
+const nextBtn = document.getElementById("nextBtn");
+
+function normalise(text) {
+  return text.trim().toLowerCase().replace(/\s+/g, " ");
+}
+
 function loadQuestion() {
   const celeb = celebrities[currentIndex];
 
-  document.getElementById("earImage").src = celeb.ear;
-  document.getElementById("guessInput").value = "";
-  document.getElementById("feedback").textContent = "";
-  document.getElementById("revealSection").classList.add("hidden");
+  earImage.src = celeb.ear;
+  earImage.alt = `${celeb.name} ear`;
+
+  guessInput.value = "";
+  feedback.textContent = "";
+  revealSection.classList.add("hidden");
+  fullImage.src = "";
+  answerText.textContent = "";
 }
 
 function submitGuess() {
-  const guess = document.getElementById("guessInput").value.toLowerCase();
-  const answer = celebrities[currentIndex].name.toLowerCase();
+  const guess = normalise(guessInput.value);
+  const answer = normalise(celebrities[currentIndex].name);
+
+  if (!guess) {
+    feedback.textContent = "Type a guess first.";
+    return;
+  }
 
   if (guess === answer) {
-    document.getElementById("feedback").textContent = "✅ Correct!";
+    feedback.textContent = "✅ Correct!";
   } else {
-    document.getElementById("feedback").textContent = "❌ Not quite...";
+    feedback.textContent = "❌ Not quite. Hit Reveal to see who it is.";
   }
 }
 
 function revealAnswer() {
   const celeb = celebrities[currentIndex];
-
-  document.getElementById("fullImage").src = celeb.full;
-  document.getElementById("answerText").textContent = celeb.name;
-  document.getElementById("revealSection").classList.remove("hidden");
+  fullImage.src = celeb.full;
+  fullImage.alt = celeb.name;
+  answerText.textContent = celeb.name;
+  revealSection.classList.remove("hidden");
 }
 
 function nextQuestion() {
@@ -59,5 +83,14 @@ function nextQuestion() {
   loadQuestion();
 }
 
-// Start game
+submitBtn.addEventListener("click", submitGuess);
+revealBtn.addEventListener("click", revealAnswer);
+nextBtn.addEventListener("click", nextQuestion);
+
+guessInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    submitGuess();
+  }
+});
+
 loadQuestion();
