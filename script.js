@@ -1,64 +1,153 @@
-const celebs = [
+const cards = [
   {
     name: "Cristiano Ronaldo",
-    ear: "https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg",
-    full: "https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg",
-    hint: "Footballer. Portugal."
-  },
-  {
-    name: "Taylor Swift",
-    ear: "https://upload.wikimedia.org/wikipedia/commons/f/f6/Taylor_Swift_Red_Tour.jpg",
-    full: "https://upload.wikimedia.org/wikipedia/commons/f/f6/Taylor_Swift_Red_Tour.jpg",
-    hint: "Singer. Eras Tour."
-  },
-  {
-    name: "Barack Obama",
-    ear: "https://upload.wikimedia.org/wikipedia/commons/8/8d/President_Barack_Obama.jpg",
-    full: "https://upload.wikimedia.org/wikipedia/commons/8/8d/President_Barack_Obama.jpg",
-    hint: "US President."
+    ear: "assets/ronaldo-ear.png",
+    full: "assets/ronaldo-reveal.png",
+    hint: "Footballer. Portugal. Famous goal celebration.",
+    aliases: ["cristiano ronaldo","ronaldo","cr7","cristiano"]
   },
   {
     name: "Lionel Messi",
-    ear: "https://upload.wikimedia.org/wikipedia/commons/5/5c/Lionel_Messi_20180626.jpg",
-    full: "https://upload.wikimedia.org/wikipedia/commons/5/5c/Lionel_Messi_20180626.jpg",
-    hint: "Argentina footballer."
+    ear: "assets/messi-ear.png",
+    full: "assets/messi-reveal.png",
+    hint: "Footballer. Argentina. Left-footed legend.",
+    aliases: ["lionel messi","messi","leo messi"]
+  },
+  {
+    name: "Taylor Swift",
+    ear: "assets/taylor-ear.png",
+    full: "assets/taylor-reveal.png",
+    hint: "Singer-songwriter. Eras Tour.",
+    aliases: ["taylor swift","taylor","swift"]
+  },
+  {
+    name: "Harry Styles",
+    ear: "assets/harry-ear.png",
+    full: "assets/harry-reveal.png",
+    hint: "Pop star. Former boyband. Big fashion energy.",
+    aliases: ["harry styles","harry"]
+  },
+  {
+    name: "Rihanna",
+    ear: "assets/rihanna-ear.png",
+    full: "assets/rihanna-reveal.png",
+    hint: "Singer and mogul. Umbrella.",
+    aliases: ["rihanna","riri","ri ri"]
+  },
+  {
+    name: "Barack Obama",
+    ear: "assets/obama-ear.png",
+    full: "assets/obama-reveal.png",
+    hint: "44th US president.",
+    aliases: ["barack obama","obama","barack"]
   }
 ];
 
-let i = 0;
+let deck = shuffle([...cards]);
+let index = 0;
+let tadghMode = false;
 
-function load() {
-  document.getElementById("earImage").src = celebs[i].ear;
-  document.getElementById("feedback").textContent = "";
-  document.getElementById("guessInput").value = "";
-  document.getElementById("revealBox").classList.add("hidden");
+const earImage = document.getElementById("earImage");
+const fullImage = document.getElementById("fullImage");
+const answer = document.getElementById("answer");
+const revealBox = document.getElementById("revealBox");
+const feedback = document.getElementById("feedback");
+const guessInput = document.getElementById("guessInput");
+const tadghBtn = document.getElementById("tadghBtn");
+
+document.getElementById("submitBtn").addEventListener("click", submitGuess);
+document.getElementById("hintBtn").addEventListener("click", showHint);
+document.getElementById("revealBtn").addEventListener("click", revealCard);
+document.getElementById("nextBtn").addEventListener("click", nextCard);
+tadghBtn.addEventListener("click", toggleTadghMode);
+guessInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") submitGuess();
+});
+
+function shuffle(arr){
+  for(let i = arr.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
 }
 
-function submitGuess() {
-  let guess = document.getElementById("guessInput").value.toLowerCase();
-  let answer = celebs[i].name.toLowerCase();
+function normalize(text){
+  return text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9 ]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
 
-  if (guess === answer) {
-    document.getElementById("feedback").textContent = "✅ Correct!";
+function current(){
+  return deck[index];
+}
+
+function loadCard(){
+  const card = current();
+  earImage.src = card.ear;
+  earImage.alt = card.name + " ear clue";
+  guessInput.value = "";
+  revealBox.classList.add("hidden");
+  fullImage.src = "";
+  answer.textContent = "";
+  feedback.innerHTML = tadghMode
+    ? "Tadgh Mode engaged. Pure notions. Massive confidence. Variable accuracy."
+    : "Fresh deck. Fresh ears. Go on.";
+}
+
+function submitGuess(){
+  const guessRaw = guessInput.value.trim();
+  const guess = normalize(guessRaw);
+
+  if(!guess){
+    feedback.textContent = tadghMode
+      ? "At least lash in a name, Tadgh."
+      : "Type a name first.";
+    return;
+  }
+
+  const ok = current().aliases.some(a => normalize(a) === guess);
+
+  if(ok){
+    feedback.innerHTML = tadghMode
+      ? "✅ Stop. He actually got <strong>" + current().name + "</strong>. Tadgh is unbearable now."
+      : "✅ Correct. <strong>" + current().name + "</strong>.";
+    revealCard();
   } else {
-    document.getElementById("feedback").textContent = "❌ Nope!";
+    feedback.textContent = tadghMode
+      ? "❌ Not " + guessRaw + ". Bold. Completely wrong, but bold."
+      : "❌ Not " + guessRaw + ". Hit Hint or Reveal.";
   }
 }
 
-function giveHint() {
-  document.getElementById("feedback").textContent = celebs[i].hint;
+function showHint(){
+  feedback.textContent = (tadghMode ? "Tadgh Hint: " : "Hint: ") + current().hint;
 }
 
-function reveal() {
-  document.getElementById("fullImage").src = celebs[i].full;
-  document.getElementById("answer").textContent = celebs[i].name;
-  document.getElementById("revealBox").classList.remove("hidden");
+function revealCard(){
+  fullImage.src = current().full;
+  answer.textContent = current().name;
+  revealBox.classList.remove("hidden");
 }
 
-function next() {
-  i++;
-  if (i >= celebs.length) i = 0;
-  load();
+function nextCard(){
+  index++;
+  if(index >= deck.length){
+    deck = shuffle([...cards]);
+    index = 0;
+  }
+  loadCard();
 }
 
-load();
+function toggleTadghMode(){
+  tadghMode = !tadghMode;
+  tadghBtn.textContent = tadghMode ? "Tadgh Mode: On" : "Tadgh Mode: Off";
+  tadghBtn.classList.toggle("on", tadghMode);
+  loadCard();
+}
+
+loadCard();

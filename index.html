@@ -1,34 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Guess the Celebrity 👂</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guess the Celebrity Ears</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <div class="page">
+    <div class="card">
+      <div class="topbar">
+        <div>
+          <div class="eyebrow">AI remix demo</div>
+          <h1>👂 Guess the Celebrity</h1>
+          <p class="subtitle">Guess the celeb from the ear crop, then reveal the answer.</p>
+        </div>
+        <button id="tadghBtn" class="mode-btn" type="button">Tadgh Mode: Off</button>
+      </div>
 
-<div class="container">
-  <h1>👂 Guess the Celebrity</h1>
+      <div class="image-wrap">
+        <img id="earImage" src="" alt="Celebrity ear clue" />
+      </div>
 
-  <img id="earImage">
+      <input id="guessInput" type="text" placeholder="Type your guess..." autocomplete="off" />
 
-  <input id="guessInput" placeholder="Type your guess...">
+      <div class="buttons">
+        <button id="submitBtn" type="button">Submit</button>
+        <button id="hintBtn" type="button" class="secondary">Hint</button>
+        <button id="revealBtn" type="button" class="warning">Reveal</button>
+        <button id="nextBtn" type="button" class="secondary">Next</button>
+      </div>
 
-  <div class="buttons">
-    <button onclick="submitGuess()">Submit</button>
-    <button onclick="giveHint()">Hint</button>
-    <button onclick="reveal()">Reveal</button>
-    <button onclick="next()">Next</button>
+      <div id="feedback" class="feedback">Fresh deck. Fresh ears. Go on.</div>
+
+      <div id="revealBox" class="reveal hidden">
+        <img id="fullImage" src="" alt="Reveal card" />
+        <div class="answer-wrap">
+          <div class="label">It was…</div>
+          <div id="answer" class="answer"></div>
+        </div>
+      </div>
+
+      <div class="thumbs-title">Pack preview</div>
+      <div class="thumbs">
+        <img src="assets/ronaldo-ear.png" alt="">
+        <img src="assets/messi-ear.png" alt="">
+        <img src="assets/taylor-ear.png" alt="">
+        <img src="assets/harry-ear.png" alt="">
+        <img src="assets/rihanna-ear.png" alt="">
+        <img src="assets/obama-ear.png" alt="">
+      </div>
+    </div>
   </div>
-
-  <div id="feedback"></div>
-
-  <div id="revealBox" class="hidden">
-    <img id="fullImage">
-    <p id="answer"></p>
-  </div>
-</div>
-
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
