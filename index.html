@@ -3,44 +3,63 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Guess the Celebrity Ears</title>
+  <title>AI Celebrity Ears</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="page">
-    <div class="card">
-      <h1>👂 Guess the Celebrity</h1>
-      <p class="subtitle">Look at the ear. Type your guess. Then reveal the celeb.</p>
-
-      <div class="imageWrap">
-        <img id="earImage" src="" alt="Celebrity ear" />
+  <div class="wrap">
+    <div class="shell">
+      <div class="hero">
+        <div>
+          <div class="eyebrow">made with AI in one pass</div>
+          <h1>👂 Celebrity Ears</h1>
+          <p class="sub">Not just a game. A demo of how fast AI can build a playable idea, the assets, and the remixable structure.</p>
+        </div>
+        <div class="stats">
+          <div class="stat"><span>Score</span><strong id="score">0</strong></div>
+          <div class="stat"><span>Card</span><strong id="cardNo">1</strong></div>
+        </div>
       </div>
 
-      <div class="controls">
-        <input
-          type="text"
-          id="guessInput"
-          placeholder="Type celebrity name..."
-          autocomplete="off"
-        />
-      </div>
+      <div class="grid">
+        <section class="panel image-panel">
+          <img id="earImage" alt="Celebrity ear clue" />
+        </section>
 
-      <div class="buttons">
-        <button id="submitBtn">Submit Guess</button>
-        <button id="revealBtn">Reveal</button>
-        <button id="nextBtn">Next</button>
-      </div>
+        <section class="panel side-panel">
+          <label for="guessInput">Who is it?</label>
+          <input id="guessInput" type="text" placeholder="Type a celeb name..." autocomplete="off" />
 
-      <div id="feedback" class="feedback"></div>
+          <div class="buttons">
+            <button id="guessBtn">Submit guess</button>
+            <button id="revealBtn" class="ghost">Reveal</button>
+            <button id="hintBtn" class="ghost">Hint</button>
+            <button id="tadghBtn" class="ghost">Tadgh Mode: Off</button>
+            <button id="nextBtn">Next</button>
+          </div>
 
-      <div id="revealSection" class="reveal hidden">
-        <h2>The answer is:</h2>
-        <div class="answerName" id="answerText"></div>
-        <img id="fullImage" src="" alt="Celebrity reveal" />
+          <div id="feedback" class="feedback">Fresh deck. Fresh nonsense. Go on.</div>
+
+          <div id="revealCard" class="reveal hidden">
+            <img id="fullImage" alt="Celebrity reveal" />
+            <div class="revealText">
+              <div class="small">It was...</div>
+              <div id="answerText" class="answer"></div>
+            </div>
+          </div>
+
+          <div class="teacher-box">
+            <h3>Why this is good for class</h3>
+            <ul>
+              <li>All assets are in <strong>/assets</strong>.</li>
+              <li>All game data is in one array in <strong>script.js</strong>.</li>
+              <li>Swap names, images, hints, or add your own cards live.</li>
+            </ul>
+          </div>
+        </section>
       </div>
     </div>
   </div>
-
   <script src="script.js"></script>
 </body>
 </html>

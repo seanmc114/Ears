@@ -1,96 +1,221 @@
-const celebrities = [
-  {
-    name: "Barack Obama",
-    ear: "images/obama-ear.jpg",
-    full: "images/obama.jpg"
-  },
-  {
-    name: "Taylor Swift",
-    ear: "images/taylor-ear.jpg",
-    full: "images/taylor.jpg"
-  },
-  {
-    name: "Cristiano Ronaldo",
-    ear: "images/ronaldo-ear.jpg",
-    full: "images/ronaldo.jpg"
-  },
-  {
-    name: "Adele",
-    ear: "images/adele-ear.jpg",
-    full: "images/adele.jpg"
-  }
-];
+*{box-sizing:border-box}
+:root{
+  --bg1:#020617;
+  --bg2:#1d4ed8;
+  --panel:rgba(255,255,255,0.1);
+  --line:rgba(255,255,255,0.14);
+  --text:#f8fafc;
+  --muted:#cbd5e1;
+  --gold:#facc15;
+  --gold2:#f59e0b;
+}
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:Arial, Helvetica, sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 15% 10%, rgba(250,204,21,0.14), transparent 24%),
+    radial-gradient(circle at 80% 18%, rgba(236,72,153,0.14), transparent 22%),
+    radial-gradient(circle at 85% 85%, rgba(34,197,94,0.14), transparent 26%),
+    linear-gradient(135deg, var(--bg1), var(--bg2));
+}
+.wrap{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+}
+.shell{
+  width:min(1180px, 100%);
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:30px;
+  padding:24px;
+  backdrop-filter:blur(10px);
+  box-shadow:0 24px 80px rgba(0,0,0,0.32);
+}
+.hero{
+  display:flex;
+  justify-content:space-between;
+  gap:18px;
+  margin-bottom:18px;
+}
+.eyebrow{
+  display:inline-block;
+  font-size:0.82rem;
+  text-transform:uppercase;
+  letter-spacing:0.14em;
+  color:#fde68a;
+  margin-bottom:8px;
+}
+h1{
+  margin:0 0 8px;
+  font-size:clamp(2.1rem,4vw,3.2rem);
+}
+.sub{
+  margin:0;
+  color:var(--muted);
+  max-width:750px;
+  line-height:1.45;
+}
+.stats{
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+}
+.stat{
+  min-width:96px;
+  text-align:center;
+  padding:12px 14px;
+  background:rgba(255,255,255,0.08);
+  border:1px solid var(--line);
+  border-radius:18px;
+}
+.stat span{
+  display:block;
+  color:var(--muted);
+  font-size:0.85rem;
+}
+.stat strong{
+  display:block;
+  font-size:2rem;
+  margin-top:4px;
+}
+.grid{
+  display:grid;
+  grid-template-columns:1.08fr 0.92fr;
+  gap:20px;
+}
+.panel{
+  background:rgba(255,255,255,0.07);
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:18px;
+}
+.image-panel{
+  min-height:640px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+#earImage,#fullImage{
+  width:100%;
+  max-width:560px;
+  display:block;
+  border-radius:24px;
+  box-shadow:0 18px 42px rgba(0,0,0,0.28);
+}
+label{
+  display:block;
+  font-weight:800;
+  margin-bottom:8px;
+}
+input{
+  width:100%;
+  border:none;
+  border-radius:16px;
+  padding:16px 18px;
+  font-size:1rem;
+  margin-bottom:14px;
+}
+.buttons{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:16px;
+}
+button{
+  border:none;
+  border-radius:16px;
+  padding:14px 18px;
+  font-size:1rem;
+  font-weight:800;
+  cursor:pointer;
+  background:linear-gradient(180deg,var(--gold),var(--gold2));
+  color:#111827;
+}
+button.ghost{
+  background:rgba(255,255,255,0.12);
+  color:#fff;
+  border:1px solid var(--line);
+}
+.feedback{
+  min-height:60px;
+  background:rgba(2,6,23,0.34);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:14px 16px;
+  margin-bottom:16px;
+  line-height:1.45;
+}
+.reveal{
+  display:grid;
+  grid-template-columns:190px 1fr;
+  gap:16px;
+  align-items:center;
+  background:rgba(2,6,23,0.34);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:14px;
+  margin-bottom:16px;
+}
+.reveal img{
+  width:190px;
+  border-radius:18px;
+}
+.small{
+  color:var(--muted);
+  font-size:0.9rem;
+  margin-bottom:6px;
+}
+.answer{
+  font-size:1.8rem;
+  font-weight:900;
+}
+.teacher-box{
+  background:rgba(2,6,23,0.30);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:14px 16px;
+}
+.teacher-box h3{
+  margin:0 0 10px;
+}
+.teacher-box ul{
+  margin:0;
+  padding-left:18px;
+  color:var(--muted);
+}
+.hidden{display:none !important}
 
-let currentIndex = 0;
-
-const earImage = document.getElementById("earImage");
-const guessInput = document.getElementById("guessInput");
-const feedback = document.getElementById("feedback");
-const revealSection = document.getElementById("revealSection");
-const fullImage = document.getElementById("fullImage");
-const answerText = document.getElementById("answerText");
-
-const submitBtn = document.getElementById("submitBtn");
-const revealBtn = document.getElementById("revealBtn");
-const nextBtn = document.getElementById("nextBtn");
-
-function normalise(text) {
-  return text.trim().toLowerCase().replace(/\s+/g, " ");
+@media (max-width:900px){
+  .grid{grid-template-columns:1fr}
+  .image-panel{min-height:unset}
+}
+@media (max-width:560px){
+  .hero{flex-direction:column}
+  .stats{justify-content:flex-start}
+  .reveal{grid-template-columns:1fr}
+  .reveal img{width:100%;max-width:220px}
 }
 
-function loadQuestion() {
-  const celeb = celebrities[currentIndex];
 
-  earImage.src = celeb.ear;
-  earImage.alt = `${celeb.name} ear`;
-
-  guessInput.value = "";
-  feedback.textContent = "";
-  revealSection.classList.add("hidden");
-  fullImage.src = "";
-  answerText.textContent = "";
+#tadghBtn.tadgh-on{
+  background: linear-gradient(180deg, #22c55e, #16a34a);
+  color: #052e16;
+  border: none;
 }
 
-function submitGuess() {
-  const guess = normalise(guessInput.value);
-  const answer = normalise(celebrities[currentIndex].name);
-
-  if (!guess) {
-    feedback.textContent = "Type a guess first.";
-    return;
-  }
-
-  if (guess === answer) {
-    feedback.textContent = "✅ Correct!";
-  } else {
-    feedback.textContent = "❌ Not quite. Hit Reveal to see who it is.";
-  }
+.mode-note{
+  display:inline-block;
+  margin-top:8px;
+  padding:6px 10px;
+  border-radius:999px;
+  background: rgba(34,197,94,0.18);
+  border:1px solid rgba(255,255,255,0.14);
+  color:#dcfce7;
+  font-size:0.85rem;
+  font-weight:700;
 }
-
-function revealAnswer() {
-  const celeb = celebrities[currentIndex];
-  fullImage.src = celeb.full;
-  fullImage.alt = celeb.name;
-  answerText.textContent = celeb.name;
-  revealSection.classList.remove("hidden");
-}
-
-function nextQuestion() {
-  currentIndex++;
-  if (currentIndex >= celebrities.length) {
-    currentIndex = 0;
-  }
-  loadQuestion();
-}
-
-submitBtn.addEventListener("click", submitGuess);
-revealBtn.addEventListener("click", revealAnswer);
-nextBtn.addEventListener("click", nextQuestion);
-
-guessInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    submitGuess();
-  }
-});
-
-loadQuestion();
